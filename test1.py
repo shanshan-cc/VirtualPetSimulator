@@ -30,6 +30,7 @@ class Cat:
 cat1 = Cat('name')
 name = input("输入小猫的名字吧：")
 print(f"小猫:{name}૮ ・ﻌ・ა\n心情值:{cat1.mood}\n体力值:{cat1.energy}")
+print("---------------------------------")
 
 while True:
     print(f"{name}感到无聊了，接下来做什么好呢？")
@@ -43,6 +44,8 @@ while True:
     else:
         print("打错暗号了！猫猫似乎没理解你的意图")
     print(f"心情值:{cat1.mood}\n体力值:{cat1.energy}")
+
+    print("---------------------------------")
 
     if cat1.energy<0:
         print("糟糕！小猫累倒了૮₍°□°₎ა\n铲屎官心惊胆战的过完了这个下午\n记得好好注意猫猫的体力！")
