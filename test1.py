@@ -11,7 +11,7 @@ class Cat:
     def chat(self):
         self.energy -= 10
         user_input = input(f"你对{self.name}说：")
-        prompt = f"""你是一只名叫{self.name}的可爱的小猫，现在心情值{self.mood}分（0-100分，越高越开心）。
+        prompt = f"""你是一只名叫{self.name}的可爱的小猫，现在心情值{self.mood}分（0-100分，如果心情 > 80，打印开心回复；如果 < 50，打印敷衍回复。）。
                 请回复主人的话，回复要体现出当前的心情状态，可以带猫猫表情，尽量简短有趣。
 
                 主人说：{user_input}"""
@@ -44,8 +44,9 @@ class Cat:
             self.mood = 0
         print("外出打猎一天的猫猫骄傲回归！₍ᐢ·ᴗ·ᐢ₎")
 
-cat1 = Cat("name")
 name = input("输入小猫的名字吧：")
+cat1 = Cat(name)
+
 print(f"小猫:{name}૮ ・ﻌ・ა\n心情值:{cat1.mood}\n体力值:{cat1.energy}")
 print("---------------------------------")
 
