@@ -1,18 +1,35 @@
 import random
+import requests
+
 class Cat:
     def __init__(self,name:str):
         self.name = name
         self.mood = random.randint(1, 100)
         self.energy = random.randint(1, 100)
+        self.ollama_url = "http://localhost:11434/api/generate"
 
     def chat(self):
         self.energy -= 10
-        if self.mood>80:
-            print(f"{self.name}主动蹭了蹭你，看起来很开心的样子૮₍˶•ᴗ•˶₎ა")
-        elif self.mood<80 and self.mood>50:
-            print(f"{self.name}趴在你旁边，大度的猫猫允许了人类的抚摸૮ ・ﻌ・ა")
-        else:
-            print("你蹲在猫窝旁呼唤了很久，猫猫完全没有回应，下次再尝试吧！")
+        user_input = input(f"你对{self.name}说：")
+        prompt = f"""你是一只名叫{self.name}的可爱的小猫，现在心情值{self.mood}分（0-100分，越高越开心）。
+                请回复主人的话，回复要体现出当前的心情状态，可以带猫猫表情，尽量简短有趣。
+
+                主人说：{user_input}"""
+
+        data = {
+            "model": "gemma3:270m",
+            "prompt": prompt,
+            "stream": False,         #一次性完整回复
+            "options": {
+                "temperature": 0.8,  #随机性
+                "max_tokens": 150    #回复长度
+            }
+        }
+
+        response = requests.post("http://localhost:11434/api/generate", json=data)   #发送请求、获取回复
+        reply = response.json()["response"].strip()                                      #转字典
+
+        print(f"{self.name}：{reply}")    #回复
 
     def sleep(self):
         self.energy += 50
@@ -27,14 +44,14 @@ class Cat:
             self.mood = 0
         print("外出打猎一天的猫猫骄傲回归！₍ᐢ·ᴗ·ᐢ₎")
 
-cat1 = Cat('name')
+cat1 = Cat("name")
 name = input("输入小猫的名字吧：")
 print(f"小猫:{name}૮ ・ﻌ・ა\n心情值:{cat1.mood}\n体力值:{cat1.energy}")
 print("---------------------------------")
 
 while True:
     print(f"{name}感到无聊了，接下来做什么好呢？")
-    choice = input("1 聊天, 2 睡觉, 3 工作（请输入数字）")
+    choice = input("1 聊天(AI), 2 睡觉, 3 工作（请输入数字）")
     if choice == '1':
         cat1.chat()
     elif choice == '2':
